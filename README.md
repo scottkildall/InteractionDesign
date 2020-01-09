@@ -51,6 +51,9 @@ When you make changes to the repository, you can use the following lines of code
 	git commit "commit message"
 	git push
 
+This will:
+(1) add all the files in your directory; (2) commit the files for GitHub with a message of what has changed; (3) upload them to GitHub
+
 ## Processing Sketches
 
 **(1) HelloWorld**
