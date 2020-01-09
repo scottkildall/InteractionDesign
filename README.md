@@ -58,4 +58,8 @@ This will:
 
 **(1) HelloWorld**
 
-This is a basic Processing sketch that will display the text "HelloWorld" on the screen
+This is a basic Processing sketch that will display the text "HelloWorld" on the screen. Currently this is just a code skeleton.
+
+We will fill in the details in class!
+
+
