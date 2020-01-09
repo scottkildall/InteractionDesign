@@ -20,6 +20,8 @@ Go to the Terminal window (Mac) and type in:
 	"cd "
 (don't forget the extra space), cd = change directory Linux command
 
+then **drag** your folder onto the Terminal window. This will navigate to that directory.
+
 to verify and see your files, type in
 	
 	ls
@@ -28,7 +30,7 @@ to verify and see your files, type in
 ls = list files and directories
 
 
-Drag you folder onto the terminal window and type in the following, which you can cop
+Now, type in the following, which you can copy from GitHub. Make sure to use your repository name, not the one that I have listed
 
 
 	git init
@@ -36,6 +38,18 @@ Drag you folder onto the terminal window and type in the following, which you ca
 	git commit -m "first commit"
 	git remote add origin https://github.com/scottkildall/InteractionDesign.git
 	git push -u origin master
+	
+	
+
+Now, check out the repository on GitHub and you should see your README.md file on there. 
+
+### Pushing changes
+
+When you make changes to the repository, you can use the following lines of code:
+
+	git add .
+	git commit "commit message"
+	git push
 
 ## Processing Sketches
 
