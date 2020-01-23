@@ -5,10 +5,9 @@
   Writes Students Name on the screen and selects groups of 2 to work together
   
   Improvements/problems
-  (1) If there is an odd number of students, this won't (currently) work
-  (2) The xvun
-  (3) aesthetics! It looks like programmer art
-  
+    * Aesthetics! It looks like programmer art
+    * Do we always want 3 connections if we have an odd number?
+    
 */
 
 // Global variable for our font, which we create at startup
@@ -60,6 +59,11 @@ void draw() {
     for(int i = 0; i < numNames-1; i = i +2 ) {
       line(names[connections.get(i)].x, names[connections.get(i)].y,names[connections.get(i+1)].x, names[connections.get(i+1)].y );
     }
+    
+    // check for odd number
+    if( (numNames % 2) == 1 ) {
+      line(names[connections.get(numNames-1)].x, names[connections.get(numNames-1)].y,names[connections.get(numNames-2)].x, names[connections.get(numNames-2)].y );
+    }  
   }
   
   // account for numNames being an odd number here
@@ -102,7 +106,7 @@ void initializeNames() {
   addName("Reilly");
   addName("Taylor");
   addName("Tiffany");
-  addName("Tommy");
+  //addName("Tommy");
 }
 
 void addName(String s) {
