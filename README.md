@@ -60,4 +60,7 @@ This will:
 
 This is a basic Processing sketch that will display the text "HelloWorld" on the screen. 
 
+**(1) RandomPartners**
+
+This is a basic Processing sketch that will assign random partners (two) for the entire class. There are a couple of improvements that still need to be made (see comments in the .pde file)
 

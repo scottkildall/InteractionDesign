@@ -2,26 +2,40 @@
   Random Partners
   by Scott Kildall
   
-  Writes Students Name on the screen and selects groups of 2 or 3 to work together
+  Writes Students Name on the screen and selects groups of 2 to work together
+  
+  Improvements/problems
+  (1) If there is an odd number of students, this won't (currently) work
+  (2) The xvun
+  (3) aesthetics! It looks like programmer art
+  
 */
 
 // Global variable for our font, which we create at startup
 PFont f;
 
 //-- array of names, change numNames and addName() below if students are absent
-int numNames = 15;
+int numStudents = 16;      // array sizes
+int numNames = 0;              // number actually added
 FloatingName [] names;
-int addNameIndex = 0;
+
+// toggle between these two
+boolean bDrawConnections = false;
+
+// array-shuffling
+IntList connections;
 
 void setup() {
   size(1000, 600);
   textAlign(CENTER);
+  randomSeed(mouseX * mouseY);       // seed off of mouse coordinates
 
   // f is created here
   f = createFont("Helvetica",24,true); 
+  textFont(f); 
   
+  connections = new IntList();
   initializeNames();
-  
 }
 
 
@@ -33,25 +47,52 @@ void draw() {
   textFont(f);       
   fill(0,255,128);
   
-  for( int i = 0; i < numNames; i++ ) 
+  for( int i = 0; i < numNames; i++ ) {
+    names[i].update();
     names[i].draw();
+  }
   
+  // now draw lines
+  stroke(255);
+  strokeWeight(1);
+  
+  if( bDrawConnections )  {
+    for(int i = 0; i < numNames-1; i = i +2 ) {
+      line(names[connections.get(i)].x, names[connections.get(i)].y,names[connections.get(i+1)].x, names[connections.get(i+1)].y );
+    }
+  }
+  
+  // account for numNames being an odd number here
 }
 
+
+void keyPressed() {
+  if( key == ' ' ) {
+    for( int i = 0; i < numNames; i++ ) 
+    names[i].initialize();
+  }
+  
+  if( key == '1' ) {
+     bDrawConnections = !bDrawConnections;
+     
+     if( bDrawConnections )
+       makeConnections(); 
+  }
+}
 
 //-- go through all students in list, comment out if people aren't here
 //-- note: there is a better way!
 void initializeNames() {
-  int numStudents = 15;
+
   
   names = new FloatingName[numStudents];
   
   addName("Alvin");
-  addName("Ari");
   addName("Ashley");
   addName("DJ");
   addName("Graham");
   addName("Jake");
+  addName("Jeffrey");
   addName("Journ");
   addName("Juliet");
   addName("Kara");
@@ -60,10 +101,18 @@ void initializeNames() {
   addName("Natalie");
   addName("Reilly");
   addName("Taylor");
+  addName("Tiffany");
   addName("Tommy");
 }
 
 void addName(String s) {
-  names[addNameIndex] = new FloatingName(s);
-  addNameIndex++;
+  // for the connections, a shuffled list
+  connections.append(numNames);
+  
+  names[numNames] = new FloatingName(s);
+  numNames++;
+}
+
+void makeConnections() {
+  connections.shuffle();
 }
