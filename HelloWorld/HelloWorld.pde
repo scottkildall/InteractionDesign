@@ -2,7 +2,7 @@
   Hello, World
   by Scott Kildall
   
-  Writes "Hello, World" on the screen (black) with some sort of color
+  Writes "Hello, World" on the screen with some sort of color
 */
 
 // Global variable for our font, which we create at startup
