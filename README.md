@@ -66,4 +66,4 @@ This is a Processing sketch that will assign random partners (two) for the entir
 
 **(3) RandomSelector**
 
-This is a Processing sketch that will choose random students from tha class for presentations, etc. Not working yet, but the skeleton is in here.
+This is a Processing sketch that will choose random students from tha class for presentations, etc. Rough version is working. Would like to add sound in the future.
