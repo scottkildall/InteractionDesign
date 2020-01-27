@@ -67,3 +67,7 @@ This is a Processing sketch that will assign random partners (two) for the entir
 **(3) RandomSelector**
 
 This is a Processing sketch that will choose random students from tha class for presentations, etc. Rough version is working. Would like to add sound in the future.
+
+**(4) ExapandingShapes**
+
+This is a Processing sketch that will move and expand shapes automatically. Right now, it is just a skeleton as we will do some in-class work.
