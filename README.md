@@ -61,7 +61,7 @@ Go to the Terminal window (Mac) and type in:
 	"cd "
 (don't forget the extra space), cd = change directory Linux command
 
-git
+
 	git pull
 
 
