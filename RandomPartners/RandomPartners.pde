@@ -25,7 +25,7 @@ boolean bDrawConnections = false;
 IntList connections;
 
 void setup() {
-  size(1000, 600);
+  size(1800, 1000);
   textAlign(CENTER);
   randomSeed(mouseX * mouseY);       // seed off of mouse coordinates
 

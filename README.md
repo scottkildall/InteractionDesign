@@ -48,7 +48,7 @@ Now, check out the repository on GitHub and you should see your README.md file o
 When you make changes to the repository, you can use the following lines of code:
 
 	git add .
-	git commit "commit message"
+	git commit -m "commit message"
 	git push
 
 This will:
@@ -68,6 +68,6 @@ This is a Processing sketch that will assign random partners (two) for the entir
 
 This is a Processing sketch that will choose random students from tha class for presentations, etc. Rough version is working. Would like to add sound in the future.
 
-**(4) ExapandingShapes**
+**(4) ExpandingShapes**
 
 This is a Processing sketch that will move and expand shapes automatically. Right now, it is just a skeleton as we will do some in-class work.
