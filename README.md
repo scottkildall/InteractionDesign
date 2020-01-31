@@ -54,6 +54,18 @@ When you make changes to the repository, you can use the following lines of code
 This will:
 (1) add all the files in your directory; (2) commit the files for GitHub with a message of what has changed; (3) upload them to GitHub
 
+### Pull changes
+
+Go to the Terminal window (Mac) and type in:
+
+	"cd "
+(don't forget the extra space), cd = change directory Linux command
+
+
+	git pull
+
+
+
 ## Processing Sketches
 
 **(1) HelloWorld**
