@@ -83,3 +83,39 @@ This is a Processing sketch that will choose random students from tha class for 
 **(4) ExpandingShapes**
 
 This is a Processing sketch that will move and expand shapes automatically. Right now, it is just a skeleton as we will do some in-class work.
+
+
+## p5.js Sketches
+
+For all the p5.js sketches, when running under Chrome, you can do View->Developer Source->Java Console to see console information
+
+
+**(1) ExpandingShapesP5**
+
+Port of Processing ExpandingShapes sketch
+
+**(2) RotateExampleP5**
+
+Rotating ellipse example
+
+**(3) imageDisplayP5**
+
+Displays a simple image. You will have to start a localhost server
+
+Go to the Terminal window (Mac) and type in:
+
+	"cd "
+(don't forget the extra space), cd = change directory Linux command and drag imageDisplayP5 folder onto the terminal window.
+
+
+
+In the Terminal Window
+
+	 python -m SimpleHTTPServer 8080
+
+In your web-browser (testing in Chrome)
+
+
+	 http://localhost:8080/
+
+This should display p5.js sketch
