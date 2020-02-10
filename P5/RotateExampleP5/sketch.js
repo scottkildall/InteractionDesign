@@ -5,7 +5,7 @@
   Rotation example using P5
 */
 
-var r = 0;
+var r = 0
 
 function setup() {
   createCanvas(750, 750);
@@ -20,8 +20,8 @@ function draw() {
 
   // move to origin and perform the translation
   translate(width/2, height/2);
-  r = r + .01;
-  rotate(r);
+  r = r + .01
+  rotate(r)
 
   // move to original spot
   translate(-width/2, -height/2);
