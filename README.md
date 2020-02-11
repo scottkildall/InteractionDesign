@@ -125,4 +125,10 @@ Note: I'm using 8080 as the port, but this can be other numbers as well.
 
 **(3) imageInverseDisplayP5**
 
+Follow same directions as **imageDisplayP5** for starting your localHost. This will **invert** an image
+
+**(3) imageInverseStringsDisplayP5**
+
 Follow same directions as **imageDisplayP5** for starting your localHost
+
+This will display a random string from an array or strings from disk.
