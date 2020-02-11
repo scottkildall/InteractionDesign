@@ -119,3 +119,10 @@ In your web-browser (testing in Chrome)
 	 http://localhost:8080/
 
 This should display p5.js sketch
+
+Note: I'm using 8080 as the port, but this can be other numbers as well.
+
+
+**(3) imageInverseDisplayP5**
+
+Follow same directions as **imageDisplayP5** for starting your localHost
