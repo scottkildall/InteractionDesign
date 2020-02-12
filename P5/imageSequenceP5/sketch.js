@@ -13,6 +13,7 @@ var img
 
 var startMillis;
 
+
 // preload() will execture before setup()
 function preload() {
   imageList[0] = loadImage('assets/image1.jpg'); 			
@@ -23,6 +24,8 @@ function preload() {
 }
 
 function setup() {
+  print("imageSequenceP5 Example");
+
 	imageMode(CENTER);
 
   chooseNewImage();
@@ -34,32 +37,20 @@ function setup() {
 
 function draw() {
 	background(0);
-	
-  if( millis() > startMillis + 1000 ) {	
-  // Displays the image at center point
-  //image(img, width/2, height/2, random(mouseX), random(mouseY));
-  chooseNewImage();
-  startMillis = millis();
 
+  // When timer expires, after 1000ms, choose a new random image
+  if( millis() > startMillis + 1000 ) {	
+    // Displays the image at center point
+    //image(img, width/2, height/2, random(mouseX), random(mouseY));
+    chooseNewImage();
+    startMillis = millis();
  }
   
+  // draw the image
   image(img, width/2, height/2);
-
 }
 
-function mousePressed() {
-  bRegular = !bRegular;
 
-  chooseNewImage();
-}
-
-function keyPressed() {
-  if (key === ' ') {
-  	bRegular = !bRegular;
-  }
-
-  chooseNewImage();
-}
 
 // chooses a new items from the array, select a random
 // index 0 to length of array-1

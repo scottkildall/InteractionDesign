@@ -18,13 +18,13 @@ function preload() {
   stringList = ["hello", "hi", "greetings", "yo"];
 
   // uncomment to load from a file
-  stringList = loadStrings('assets/displaytext.txt');
+  //stringList = loadStrings('assets/displaytext.txt');
 }
 
 function setup() {
+  print("imageInverseStringsDisplay Example")
 	imageMode(CENTER);
   
-
 	createCanvas(1024, 800);
 
   // show how many elements are in the array
