@@ -39,7 +39,7 @@ function setup() {
   
   red = color(255,0,0);
   yellow = color(255,255,0);
-  green = color(0,255,0);
+  green = color(0,,0);
     
   // start with these centered 
   redX = width/2;

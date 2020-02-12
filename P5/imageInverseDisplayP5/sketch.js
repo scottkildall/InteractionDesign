@@ -10,6 +10,8 @@ var bRegular = true;
 
 // preload() will execture before setup()
 function preload() {
+  print("imageInverseDisplayP5 Example");
+
   regularImg = loadImage('assets/ferret.jpg'); 			// Load the regular image
   inverseImg = loadImage('assets/inverse_ferret.jpg'); 	// Load the inverse image
 }

@@ -11,7 +11,7 @@ function preload() {
 
 function setup() {
 	imageMode(CENTER);
-
+	print("imageDisplayP5 Example");
 	print(img);
 
 	createCanvas(1024, 800);
