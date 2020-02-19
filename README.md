@@ -123,16 +123,20 @@ This should display p5.js sketch
 Note: I'm using 8080 as the port, but this can be other numbers as well.
 
 
-**(3) imageInverseDisplayP5**
+**(4) imageInverseDisplayP5**
 
 Follow same directions as **imageDisplayP5** for starting your localHost. This will **invert** an image
 
-**(3) imageInverseStringsDisplayP5**
+**(5) imageInverseStringsDisplayP5**
 
 Follow same directions as **imageDisplayP5** for starting your localHost
 
 This will display a random string from an array or strings from disk.
 
-**(4) SliderExampleP5**
+**(6) SliderExampleP5**
 
 Rotating ellipse with a slider to control the speed
+
+**(7) InputButtonExampleP5**
+
+Input example using button, adapted from P5 examples
