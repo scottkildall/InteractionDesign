@@ -132,3 +132,7 @@ Follow same directions as **imageDisplayP5** for starting your localHost. This w
 Follow same directions as **imageDisplayP5** for starting your localHost
 
 This will display a random string from an array or strings from disk.
+
+**(4) SliderExampleP5**
+
+Rotating ellipse with a slider to control the speed

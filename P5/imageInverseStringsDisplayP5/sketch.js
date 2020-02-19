@@ -15,10 +15,10 @@ var displayString = "";    // which string we will display
 function preload() {
   regularImg = loadImage('assets/ferret.jpg'); 			// Load the regular image
   inverseImg = loadImage('assets/inverse_ferret.jpg'); 	// Load the inverse image
-  stringList = ["hello", "hi", "greetings", "yo"];
+  //stringList = ["hello", "hi", "0:", ";)", ":)"];
 
   // uncomment to load from a file
-  //stringList = loadStrings('assets/displaytext.txt');
+  stringList = loadStrings('assets/displaytext.txt');
 }
 
 function setup() {

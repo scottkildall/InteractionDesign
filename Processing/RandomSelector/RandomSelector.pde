@@ -87,7 +87,7 @@ void draw() {
     delay(delayTime);
     
     // add some randomness here
-    delayTime = delayTime + (int)random(15,20);
+    delayTime = delayTime + (int)random(10,12);
     if( delayTime > random(350,400) ) {
       bRouletteOn = false;
     }

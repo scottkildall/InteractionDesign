@@ -6,7 +6,7 @@ let img; // Declare variable 'img'.
 
 // preload() will execture before setup()
 function preload() {
-  img = loadImage('assets/ferret.jpg'); // Load the image
+  img = loadImage('assets/image1.png'); // Load the image
 }
 
 function setup() {
@@ -22,5 +22,5 @@ function draw() {
 	background(0);
 		
   	// Displays the image at center point
-  	image(img, width/2, height/2);
+  	image(img, width/2, height/2, mouseX, mouseY);
 }
