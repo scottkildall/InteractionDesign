@@ -17,23 +17,30 @@ void setup ( ) {
   printArray(Serial.list());
   
   // Set the com port and the baud rate according to the Arduino IDE
-  myPort  =  new Serial (this, Serial.list()[5],  11520); 
+  myPort  =  new Serial (this, Serial.list()[5],  9600); 
   
   // Uses newline as delimiter, so use println() with Arduino to send data
-   //myPort.bufferUntil('\n');
+   myPort.bufferUntil(10);      // 10 is ASCII linefeed character
 } 
 
 // an interrupt routine that gets data 
 
-void serialEvent(Serial myPort) {
-  String data = myPort.readString(); 
-  print(int(data));
+void checkSerial() {
+  while (myPort.available() > 0) {
+    String inBuffer = myPort.readString();  
     
-  myPort.clear();
+    //println(inBuffer.getAt);
+    
+     println(inBuffer);
+    //int inByte = int(inBuffer);
+   // println(inByte);
+  }
 } 
 
 //-- change background to red if we have a button
 void draw ( ) {  
+  checkSerial();
+  
   if( buttonPressed )
     background( 255,0,0 );
 
