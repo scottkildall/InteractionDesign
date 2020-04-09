@@ -24,7 +24,7 @@ void setup() {
   pinMode(ledPin, OUTPUT);    
   pinMode(buttonPin, INPUT);
   
-  Serial.begin(9600);
+  Serial.begin(115200);
  // Serial.println( "ButtonLED: Starting" ); 
 
    blinkLED(4);
@@ -58,12 +58,14 @@ void activateLED() {
   if( digitalRead(buttonPin) == true ) {
      // Button is ON turn the LED ON by making the voltage HIGH
     digitalWrite(ledPin, HIGH);   
+
+    // send a number, which will get converted to a string in Processing
     Serial.println(1);
   } 
   
   else {
     // Button is ON turn the LED ON by making the voltage LOW
     digitalWrite(ledPin, LOW);    // turn the LED off by making the voltage LOW 
-    Serial.println(0);     // Sending the output to Processing IDE 
+    Serial.println(0);     
   }
 }

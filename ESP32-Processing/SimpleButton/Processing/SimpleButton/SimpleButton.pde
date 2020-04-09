@@ -1,3 +1,11 @@
+/*
+  SimpleButton
+  by Scott Kildall
+
+  Expects Serial data from Arduino, 0 or 1 as a string
+  Will change the background to red when the button gets pressed
+ */
+ 
 
 // Importing the serial library to communicate with the Arduino 
 import processing.serial.*;    
@@ -6,9 +14,11 @@ import processing.serial.*;
 Serial myPort;      
 String portName = "/dev/tty.SLAB_USBtoUART";
 
-// Variable for changing the background color, 0-255
-boolean buttonPressed = false;
+// Variable for changing the background color, 0 or 1. Note: integer is easier for casting from string
+int inputValue = 0;
 
+// Change to appropriate index in the serial list — YOURS MIGHT BE DIFFERENT
+int serialIndex = 5;
 
 void setup ( ) {
   size (800,  600);    
@@ -17,33 +27,30 @@ void setup ( ) {
   printArray(Serial.list());
   
   // Set the com port and the baud rate according to the Arduino IDE
-  myPort  =  new Serial (this, Serial.list()[5],  9600); 
-  
-  // Uses newline as delimiter, so use println() with Arduino to send data
-   myPort.bufferUntil(10);      // 10 is ASCII linefeed character
+  myPort  =  new Serial (this, Serial.list()[serialIndex],  115200); 
 } 
 
-// an interrupt routine that gets data 
 
+// We call this to get the data 
 void checkSerial() {
   while (myPort.available() > 0) {
     String inBuffer = myPort.readString();  
     
-    //println(inBuffer.getAt);
+    // This removes the end-of-line from the string AND casts it to an integer
+    inputValue = int(trim(inBuffer));
     
-     println(inBuffer);
-    //int inByte = int(inBuffer);
-   // println(inByte);
+    print(inputValue);
   }
 } 
 
 //-- change background to red if we have a button
 void draw ( ) {  
+  // every loop, look for serial information
   checkSerial();
   
-  if( buttonPressed )
+  // if input value is 1 (from ESP32, indicating a button has been pressed), change the background
+  if( inputValue == 1 )
     background( 255,0,0 );
-
   else
     background(0);
 } 
