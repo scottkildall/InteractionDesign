@@ -83,18 +83,11 @@ void getPotValue() {
 //-- this could be done as a formatted string, using Serial.printf(), but
 //-- we are doing it in a simpler way for the purposes of teaching
 void sendSerialData() {
-  // Add switch on or off
-  if( switchValue ) {
-    Serial.print(1);
-  }
-  else {
-    Serial.print(0);
-  }
+  Serial.print(switchValue);
+  Serial.print(",");
+  Serial.print(potValue);
 
-   Serial.print(",");
-
-   Serial.print(potValue);
-   
+  
   // end with newline
   Serial.println();
 }

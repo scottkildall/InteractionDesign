@@ -60,7 +60,7 @@ void activateLED() {
     digitalWrite(ledPin, HIGH);   
 
     // send a number, which will get converted to a string in Processing
-    Serial.println(1);
+    Serial.println(random(100,200));
   } 
   
   else {

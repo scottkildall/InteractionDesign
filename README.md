@@ -146,4 +146,15 @@ Input example using button, adapted from P5 examples
 **(1) ButtonLED**
 
 ESP32-only sketch that makes an LED turn on/off when you press a button.
+
+**(2) SimpleButton **
+
+Responds to a button press, uses ESP32 to send a single-state to Processing
+
+**(3) SensorsToSerial **
+
+Sends data from ESP32 to Processing:
+* Switch
+* Potentiometer
+
  

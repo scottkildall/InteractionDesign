@@ -21,9 +21,12 @@ import processing.serial.*;
 Serial myPort;      
 
 // Data coming in from the data fields
+// data[0] = "1" or "0"                  -- BUTTON
+// data[1] = 0-4095, e.g "2049"          -- POT VALUE
 String [] data;
-int switchValue = 0;    // index from data fields
-int potValue = 1;
+
+int switchValue;
+int potValue;
 
 // Change to appropriate index in the serial list — YOURS MIGHT BE DIFFERENT
 int serialIndex = 2;
@@ -48,7 +51,7 @@ void setup ( ) {
   printArray(Serial.list());
   
   // Set the com port and the baud rate according to the Arduino IDE
-  myPort  =  new Serial (this, Serial.list()[serialIndex],  115200); 
+  myPort  =  new Serial (this, "/dev/cu.SLAB_USBtoUART",  115200); 
   
   // settings for drawing the ball
   ellipseMode(CENTER);
@@ -56,7 +59,6 @@ void setup ( ) {
   xBallMax = width - hBallMargin;
   xBallPos = width/2;
   yBallPos = height/2;
-  
 } 
 
 
@@ -67,14 +69,17 @@ void checkSerial() {
     
     print(inBuffer);
     
-    // This removes the end-of-line from the string AND casts it to an integer
+    // This removes the end-of-line from the string 
     inBuffer = (trim(inBuffer));
     
+    // This function will make an array of TWO items, 1st item = switch value, 2nd item = potValue
     data = split(inBuffer, ',');
- 
-    // do an error check here?
-    switchValue = int(data[0]);
-    potValue = int(data[1]);
+   
+   // we have TWO items — ERROR-CHECK HERE
+   if( data.length >= 2 ) {
+      switchValue = int(data[0]);           // first index = switch value 
+      potValue = int(data[1]);               // second index = pot value
+   }
   }
 } 
 
@@ -85,7 +90,6 @@ void draw ( ) {
   
   drawBackground();
   drawBall();
-  
 } 
 
 // if input value is 1 (from ESP32, indicating a button has been pressed), change the background

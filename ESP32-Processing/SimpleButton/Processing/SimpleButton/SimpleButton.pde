@@ -12,13 +12,12 @@ import processing.serial.*;
 
 // Initializing a vairable named 'myPort' for serial communication
 Serial myPort;      
-String portName = "/dev/tty.SLAB_USBtoUART";
 
 // Variable for changing the background color, 0 or 1. Note: integer is easier for casting from string
 int inputValue = 0;
 
 // Change to appropriate index in the serial list — YOURS MIGHT BE DIFFERENT
-int serialIndex = 5;
+int serialIndex = 2;
 
 void setup ( ) {
   size (800,  600);    
