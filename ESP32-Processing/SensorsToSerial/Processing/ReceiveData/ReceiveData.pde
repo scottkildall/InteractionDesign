@@ -5,7 +5,7 @@
   Expects a string of comma-delimted Serial data from Arduino:
   ** field is 0 or 1 as a string (switch)
   ** second fied is 0-4095 (potentiometer)
-  ** third field is 0-4095 (LDR) —— NOT YET IMPLEMENTED
+  ** third field is 0-4095 (LDR) 
   
   
     Will change the background to red when the button gets pressed
@@ -23,10 +23,12 @@ Serial myPort;
 // Data coming in from the data fields
 // data[0] = "1" or "0"                  -- BUTTON
 // data[1] = 0-4095, e.g "2049"          -- POT VALUE
+// data[2] = 0-4095, e.g. "1023"        -- LDR value
 String [] data;
 
-int switchValue;
-int potValue;
+int switchValue = 0;
+int potValue = 0;
+int ldrValue = 0;
 
 // Change to appropriate index in the serial list — YOURS MIGHT BE DIFFERENT
 int serialIndex = 2;
@@ -44,6 +46,16 @@ float xBallPos;        // calc on startup, use float b/c speed is float
 int yBallPos;        // calc on startup
 int direction = -1;    // 1 or -1
 
+//-- image paramers
+PImage flickerImg;
+float xImagePos = 0;
+float yImagePos = 0;
+
+int minLDRValue = 400;
+int maxLDRValue = 1700;
+int minAlphaValue = 0;
+int maxAlphaValue = 255;
+
 void setup ( ) {
   size (800,  600);    
   
@@ -51,6 +63,7 @@ void setup ( ) {
   printArray(Serial.list());
   
   // Set the com port and the baud rate according to the Arduino IDE
+  //-- use your port name
   myPort  =  new Serial (this, "/dev/cu.SLAB_USBtoUART",  115200); 
   
   // settings for drawing the ball
@@ -59,6 +72,12 @@ void setup ( ) {
   xBallMax = width - hBallMargin;
   xBallPos = width/2;
   yBallPos = height/2;
+
+  // load our image, use your own!
+  flickerImg = loadImage("flicker_image.jpg");
+  imageMode(CORNER);      // draw from top left
+  xImagePos = 20;
+  yImagePos = 20;
 } 
 
 
@@ -75,10 +94,11 @@ void checkSerial() {
     // This function will make an array of TWO items, 1st item = switch value, 2nd item = potValue
     data = split(inBuffer, ',');
    
-   // we have TWO items — ERROR-CHECK HERE
-   if( data.length >= 2 ) {
+   // we have THREE items — ERROR-CHECK HERE
+   if( data.length >= 3 ) {
       switchValue = int(data[0]);           // first index = switch value 
       potValue = int(data[1]);               // second index = pot value
+      ldrValue = int(data[2]);               // third index = LDR value
    }
   }
 } 
@@ -90,6 +110,7 @@ void draw ( ) {
   
   drawBackground();
   drawBall();
+  drawFlicker();
 } 
 
 // if input value is 1 (from ESP32, indicating a button has been pressed), change the background
@@ -123,4 +144,12 @@ void adjustBall() {
     direction = 1;    // go right
     xBallPos = xBallMin;
   }
+}
+
+void drawFlicker() {
+  float alphaValue = map(ldrValue, minLDRValue, maxLDRValue, minAlphaValue, maxAlphaValue);
+  
+  // this applies an alpha value to the image
+  tint(255, alphaValue);
+  image(flickerImg, xImagePos, yImagePos);
 }

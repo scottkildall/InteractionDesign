@@ -18,10 +18,12 @@
 int ledPin = 15;
 int buttonPin = 12;
 int potInputPin = A2;
+int ldrInputPin = A1;
 
 //-- analog values, track for formatting to serial
 int switchValue = 0;
 int potValue = 0;
+int ldrValue = 0;
 
 //-- time between LED flashes, for startup
 const int ledFlashDelay = 150;
@@ -33,6 +35,7 @@ void setup() {
   
   pinMode(buttonPin, INPUT);
   pinMode(potInputPin, INPUT);    // technically not needed, but good form
+  pinMode(ldrInputPin,INPUT);
   
   Serial.begin(115200);
  // Serial.println( "ButtonLED: Starting" ); 
@@ -45,6 +48,7 @@ void loop() {
   // gets switch Value AND changed LED
   getSwitchValue();
   getPotValue();
+  getLDRValue();
   sendSerialData();
  
   // delay so as to not overload serial buffer
@@ -80,14 +84,28 @@ void getPotValue() {
   potValue = analogRead(potInputPin); 
 }
 
+void getLDRValue() {
+  ldrValue = analogRead(ldrInputPin); 
+}
+
+
 //-- this could be done as a formatted string, using Serial.printf(), but
 //-- we are doing it in a simpler way for the purposes of teaching
 void sendSerialData() {
-  Serial.print(switchValue);
-  Serial.print(",");
-  Serial.print(potValue);
+  // Add switch on or off
+  if( switchValue ) {
+    Serial.print(1);
+  }
+  else {
+    Serial.print(0);
+  }
 
-  
+   Serial.print(",");
+   Serial.print(potValue);
+
+   Serial.print(",");
+   Serial.print(ldrValue);
+   
   // end with newline
   Serial.println();
 }
