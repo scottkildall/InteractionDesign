@@ -49,9 +49,13 @@ PFont poetryFont;
 String[] lines;
 int currentLineNum = 0;
 
-// timing for poem
+// timing for serial data
 Timer beatTimer;
 Timer snareRollTimer;
+
+Timer serialCheckTimer;
+
+int serialCheckTime = 50;    // every ms, during our loop, we check it
 
 float timePerLine = 0;
 float minTimePerLine = 150;
@@ -95,9 +99,13 @@ void setup ( ) {
   
   // Allocate the timer
   beatTimer = new Timer(defaultTimerPerLine);
+  
   snareRollTimer = new Timer(snareRollTime);
- 
   snareRollTimer.start();
+  
+  serialCheckTimer = new Timer(serialCheckTime);
+  serialCheckTimer.start();
+  
   
   state = stateStartup;
   
@@ -140,8 +148,11 @@ void checkSerial() {
 
 //-- change background to red if we have a button
 void draw ( ) {  
-  // every loop, look for serial information
-  checkSerial();
+  if( serialCheckTimer.expired() ) {  
+    // every loop, look for serial information
+    checkSerial();
+    serialCheckTimer.start();
+  }
   
   drawBackground();
   checkTimer();
