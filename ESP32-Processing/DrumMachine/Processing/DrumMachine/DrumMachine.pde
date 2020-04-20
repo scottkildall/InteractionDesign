@@ -26,6 +26,8 @@ SoundFile snare;
 SoundFile hihat;
 
 
+SinOsc sine;
+
 // Initializing a vairable named 'myPort' for serial communication
 Serial myPort;      
 
@@ -42,20 +44,16 @@ int ldrValue = 0;
 // Change to appropriate index in the serial list — YOURS MIGHT BE DIFFERENT
 int serialIndex = 2;
 
-// display for poem
-PFont poetryFont;
-
-// lines for the poem  
-String[] lines;
-int currentLineNum = 0;
+// display text
+PFont drawFont;
+int hMargin = 120;
 
 // timing for serial data
 Timer beatTimer;
 Timer snareRollTimer;
-
 Timer serialCheckTimer;
 
-int serialCheckTime = 50;    // every ms, during our loop, we check it
+int serialCheckTime = 20;    // every ms, during our loop, we check it
 
 float timePerLine = 0;
 float minTimePerLine = 150;
@@ -66,7 +64,15 @@ int defaultTimerPerLine = 1500;
 float minPotValue = 0;
 float maxPotValue = 4095;
 
+// mapping LDR values
+float minLDRValue = 0;
+float maxLDRValue = 4095;
+
+float minFreq = 300;
+float maxFreq = 800;
+
 // drum machine stuff
+boolean bDrumMachineOn = true;
 boolean bPlayBeat = false;
 int beatNum = 1;    // 1-8, we are 4/4, 2,4,6,8 are half beats
 int maxBeat = 8;
@@ -83,11 +89,14 @@ int stateStartup = 1;
 int stateSamplesLoaded = 2;
 int stateDrumMachine = 3;
 
+// oscillator
+boolean bOscillatorOn = false;
+
 void setup ( ) {
   size (1000,  600);    
   
   textAlign(CENTER);
-  poetryFont = createFont("Georgia", 32);
+  drawFont = createFont("Georgia", 32);
  
   // List all the available serial ports
   printArray(Serial.list());
@@ -111,6 +120,10 @@ void setup ( ) {
   
   // Load all the sound samples
   loadSamples();
+  
+  // allocate our oscillator
+  sine = new SinOsc(this);
+  sine.amp(1.0);      // volume really quiet, otherwise it's annoying
 } 
 
 
@@ -142,6 +155,7 @@ void checkSerial() {
       // switch down indicates whether we are going to be playing a cymbal or not
       bPlayCymbal = boolean(switchValue);      // convert to boolean
       
+      sine.freq( map( ldrValue, minLDRValue, maxLDRValue, minFreq, maxFreq ));
    }
   }
 } 
@@ -172,9 +186,25 @@ void draw ( ) {
   }  
 } 
 
+void keyPressed() {
+    // trap with space bar
+   if( key == 'o' ) {
+       bOscillatorOn = !bOscillatorOn;
+       
+       if( bOscillatorOn )
+         sine.play();
+       else
+         sine.stop();
+   }
+   
+   if( key == 'd' ) {
+       bDrumMachineOn = !bDrumMachineOn;
+   }
+}
+
 // if input value is 1 (from ESP32, indicating a button has been pressed), change the background
 void drawBackground() {
-    background(0); 
+    background(64); 
 }
 
 
@@ -209,6 +239,8 @@ void checkTimer() {
 
 
 void drawBeats() {
+  textFont(drawFont);
+  
   //-- TITLE
   fill(255);
   textSize(32);
@@ -216,7 +248,8 @@ void drawBeats() {
   // we could do 1-and, here 
   text(beatNum, width/2, 80 ); 
   
-   if( bPlayBeat ) {
+  // play on beat, only if the drum machine is on
+   if( bDrumMachineOn && bPlayBeat ) {
       bPlayBeat = false;
       
       if( (beatNum % 2) == 1 )
@@ -233,5 +266,27 @@ void drawBeats() {
    }
   
   ////-- CURRENT LINE (may be blank!)
-  //textFont(poetryFont);
+  
+  fill(255);
+  textSize(32);
+  
+  // we could do 1-and, here 
+  text(beatNum, width/2, 80 ); 
+  
+  fill(0,120,240);
+  textSize(20);
+  
+  if( bOscillatorOn )
+    text( "oscillator: ON", hMargin, height-140 ); 
+  else
+    text( "oscillator: OFF", hMargin, height-140 ); 
+    
+   if( bDrumMachineOn )
+    text( "drum machine: ON", width-hMargin, height-140 ); 
+  else
+    text( "drum machine: OFF", width-hMargin, height-140 ); 
+    
+    fill(0,240,120);
+    textSize(16);
+    text( "press 'o' to turn oscillator on/off and 'd' to turn drum machine on/off", width/2, height - 40 ); 
 }
