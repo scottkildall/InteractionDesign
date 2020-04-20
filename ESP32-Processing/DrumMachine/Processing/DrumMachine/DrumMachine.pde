@@ -1,5 +1,5 @@
 /*
-  PoetryTimer
+  DrumMachine
   by Scott Kildall
 
   Expects a string of comma-delimted Serial data from Arduino:
@@ -16,6 +16,15 @@
 
 // Importing the serial library to communicate with the Arduino 
 import processing.serial.*;    
+
+// Sound libraries
+import processing.sound.*;
+SoundFile cymbal;
+SoundFile bassDrum;
+SoundFile snareRoll;
+SoundFile snare;
+SoundFile hihat;
+
 
 // Initializing a vairable named 'myPort' for serial communication
 Serial myPort;      
@@ -41,9 +50,11 @@ String[] lines;
 int currentLineNum = 0;
 
 // timing for poem
-Timer displayTimer;
+Timer beatTimer;
+Timer snareRollTimer;
+
 float timePerLine = 0;
-float minTimePerLine = 100;
+float minTimePerLine = 150;
 float maxTimePerLine = 1000;
 int defaultTimerPerLine = 1500;
 
@@ -51,7 +62,22 @@ int defaultTimerPerLine = 1500;
 float minPotValue = 0;
 float maxPotValue = 4095;
 
-boolean showRise = false;
+// drum machine stuff
+boolean bPlayBeat = false;
+int beatNum = 1;    // 1-8, we are 4/4, 2,4,6,8 are half beats
+int maxBeat = 8;
+
+boolean bPlayCymbal = false;
+boolean bPlayBass = false;
+
+// startup with a snare!
+int snareRollTime = 2000;
+
+// two-state state machine
+int state;
+int stateStartup = 1;
+int stateSamplesLoaded = 2;
+int stateDrumMachine = 3;
 
 void setup ( ) {
   size (1000,  600);    
@@ -59,7 +85,6 @@ void setup ( ) {
   textAlign(CENTER);
   poetryFont = createFont("Georgia", 32);
  
-  
   // List all the available serial ports
   printArray(Serial.list());
   
@@ -69,11 +94,15 @@ void setup ( ) {
   
   
   // Allocate the timer
-  displayTimer = new Timer(defaultTimerPerLine);
+  beatTimer = new Timer(defaultTimerPerLine);
+  snareRollTimer = new Timer(snareRollTime);
+ 
+  snareRollTimer.start();
   
-   // settings for drawing the ball
-  loadPoem();
-  startPoem();
+  state = stateStartup;
+  
+  // Load all the sound samples
+  loadSamples();
 } 
 
 
@@ -82,7 +111,7 @@ void checkSerial() {
   while (myPort.available() > 0) {
     String inBuffer = myPort.readString();  
     
-    print(inBuffer);
+    //print(inBuffer);
     
     // This removes the end-of-line from the string 
     inBuffer = (trim(inBuffer));
@@ -98,7 +127,13 @@ void checkSerial() {
       
       // change the display timer
       timePerLine = map( potValue, minPotValue, maxPotValue, minTimePerLine, maxTimePerLine );
-      displayTimer.setTimer( int(timePerLine));
+      beatTimer.setTimer( int(timePerLine));
+      
+      // ANALYZE DATA
+      
+      // switch down indicates whether we are going to be playing a cymbal or not
+      bPlayCymbal = boolean(switchValue);      // convert to boolean
+      
    }
   }
 } 
@@ -110,7 +145,20 @@ void draw ( ) {
   
   drawBackground();
   checkTimer();
-  drawPoem();
+  
+  if( state == stateStartup ) {
+     redraw();
+     loadSamples();
+     state = stateSamplesLoaded;
+  }
+  else if( state == stateSamplesLoaded ) {
+    if( snareRollTimer.expired() ) {
+      state = stateDrumMachine;   
+    }
+  }  
+  else {
+     drawBeats(); 
+  }  
 } 
 
 // if input value is 1 (from ESP32, indicating a button has been pressed), change the background
@@ -118,63 +166,61 @@ void drawBackground() {
     background(0); 
 }
 
-void loadPoem() {
-   lines = loadStrings("poem.txt");
-   
-   // This shoes the poem lines in the debugger
-  println("there are " + lines.length + " lines");
-  for (int i = 0 ; i < lines.length; i++) {
-    println(lines[i]);
-  } 
+
+void loadSamples() {
+  // Load snare roll first, then play
+  snareRoll = new SoundFile(this, "samples/real-snare-roll.wav");
+  snareRoll.play();
+  
+  cymbal = new SoundFile(this, "samples/real-01.8ACSM.wav");
+  bassDrum = new SoundFile(this, "samples/real-kick-F009.wav");
+  snare = new SoundFile(this, "samples/real-03SS-snare-R2C-L.wav");
+  hihat = new SoundFile(this, "samples/real-03PD.UF-HiHat-A-L.wav");
 }
 
 //-- resets all variables
-void startPoem() {
-  currentLineNum = 0;
-  displayTimer.start();
+void startDrumMachine() {
+  beatTimer.start();
 }
 
 //-- look at current value of the timer and change it
 void checkTimer() {
   //-- if timer is expired, go to next  the line number
-  if( displayTimer.expired() ) {
-     currentLineNum++;
+  if( beatTimer.expired() ) {
+     bPlayBeat = true;
+     beatNum++;
+     if( beatNum > maxBeat )
+       beatNum = 1;
      
-     // check to see if we are at the end of the poem, then go to zero
-     if( currentLineNum == lines.length ) 
-       currentLineNum = 0;
-       
-       if( lines[currentLineNum].equals("I rise") )
-          showRise = true;
-       else
-         showRise = false;
-         
-     displayTimer.start(); 
+     beatTimer.start(); 
   }
 }
 
-//-- draw the Title (always the same)
-//-- draw current line of poem
-void drawPoem() {
+
+void drawBeats() {
   //-- TITLE
   fill(255);
   textSize(32);
-  text("Still I Rise", width/2, 80 ); 
   
-  textSize(20);
-  text("by Maya Angelou", width/2, 120 ); 
+  // we could do 1-and, here 
+  text(beatNum, width/2, 80 ); 
   
-  //-- CURRENT LINE (may be blank!)
-  textFont(poetryFont);
+   if( bPlayBeat ) {
+      bPlayBeat = false;
+      
+      if( (beatNum % 2) == 1 )
+        bassDrum.play();
+      else {
+        if( beatNum == 8 )
+           hihat.play();
+         else   
+           snare.play();
+      }
+      
+      if( bPlayCymbal )
+       cymbal.play();
+   }
   
-  if( showRise ) {
-    fill(255,0,0);
-    textSize(48);
-  }
-  else { 
-    fill(255,255,255);
-    textSize(36);
-  }
-  
-  text(lines[currentLineNum], width/2, height/2 ); 
+  ////-- CURRENT LINE (may be blank!)
+  //textFont(poetryFont);
 }
