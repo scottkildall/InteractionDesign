@@ -1,27 +1,30 @@
 /*
   SimpleTimer
   by Scott Kildall
+  
+  Two examples of timers
  */
  
  
-Timer displayTimer;
-Timer anotherTimer;
+Timer meowTimer;
+Timer woofTimer;
 
 PFont displayFont;
 
 void setup  () {
   size (1000,  600);    
+  frameRate(5);
   
   textAlign(CENTER);
   displayFont = createFont("Georgia", 32);
   
   // Allocate the timer
-  displayTimer = new Timer(500);
-  anotherTimer = new Timer(750);
+  meowTimer = new Timer(500);
+  woofTimer = new Timer(750);
   
   // start the timer. Every 1/2 second, it will do something
-  displayTimer.start();
-  anotherTimer.start();
+  meowTimer.start();
+  woofTimer.start();
 } 
 
 
@@ -36,20 +39,21 @@ void draw () {
   text("SimpleTimer Example", width/2, 80 ); 
   
   // check to see if timer is expired, do something and then restart timer
-  if( displayTimer.expired() ) {
-    // do something
+  if( meowTimer.expired() ) {
+    // flash "Meow" on the screen
     fill(255,0,0);
     textSize(48);
     text("MEOW", width/2, height/2 ); 
     
-    displayTimer.start();
+    meowTimer.start();
   }
   
-  if( anotherTimer.expired() ) {
-     // do something
+  // check to see if other timer is expired, do something and then restart timer
+  if( woofTimer.expired() ) {
+     // Flash "Woof" on the screen
     fill(0,255,0);
     textSize(48);
     text("WOOF", width/2, height/2 + 200 ); 
-     anotherTimer.start(); 
+     woofTimer.start(); 
   }
 }

@@ -29,6 +29,27 @@ public class Timer {
     return ((startTime + duration) < millis());
   }
  
+  public long getRemainingTime() {
+    if( expired() )
+      return 0;
+      
+    return  (startTime + duration) - millis();
+  }
+  
+  public float getPercentageRemaining() {
+    if( expired() )
+     return 1.0;
+      
+    return (float)getRemainingTime()/(float)duration;
+  }
+  
+   public float getPercentageElapsed() {
+    if( expired() )
+     return 0.0;
+      
+    return 1 - ((float)getRemainingTime()/(float)duration);
+  }
+  
   //-------- PRIVATE VARIABLES --------/
   private long duration;
   private long startTime = 0;	 	
