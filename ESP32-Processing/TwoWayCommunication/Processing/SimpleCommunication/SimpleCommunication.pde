@@ -91,13 +91,17 @@ void draw () {
    // we don't spend too much tkme here
    if( serialCheckTimer.expired() ) {  
     checkSerial();
-    sendSerialData();
+    
+    // not working at the moment
+    //sendSerialData();
+    
     serialCheckTimer.start();
   }
   
   // draws all our bubble graphics
   drawGraphics();
-  drawLEDs();
+  
+  //drawLEDs();
 }
 
 
@@ -118,7 +122,7 @@ void checkSerial() {
   while (myPort.available() > 0) {
     String inBuffer = myPort.readString();  
     
-    print(inBuffer);
+    //print(inBuffer);
     
     // This removes the end-of-line from the string 
     inBuffer = (trim(inBuffer));
@@ -163,8 +167,7 @@ void sendSerialData() {
   String dataStr = str(red) + ","  + str(blue) + "," + str(green); 
   
   myPort.write(dataStr);
-  println(dataStr);
- //myPort.write("1,0,0");
+  //println(dataStr);
 }
 
 void drawGraphics() {
@@ -193,10 +196,12 @@ void drawGraphics() {
   text("Time remaining (ms): " + str(secondsDisplay), hMargin, 80 ); 
   
   // SHOW INSTRUCTIONS
+  // -- not working at the moment
+  /*
   fill(0,240,120);
   textSize(20);
   text("Press 'r', 'g' and 'b' to toggle states of the RGB LED", hMargin, 120 ); 
-  
+  */
   
  // DISPLAY PROGRESS BAR BASED ON PERCENTAGE
     float elapsedPercentage = bubbleTimer.getPercentageElapsed();

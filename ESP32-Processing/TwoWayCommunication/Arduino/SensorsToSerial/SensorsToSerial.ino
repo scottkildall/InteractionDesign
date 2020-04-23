@@ -69,13 +69,13 @@ void loop() {
   getLDRValue();
 
   // send our data stream
-  sendSerialData();
+  //sendSerialData();
 
   // check our data stream
   checkSerial();
   
   // delay so as to not overload serial buffer
-  delay(20);
+  //delay(20);
 }
 
 //-- blink that number of times
@@ -102,7 +102,9 @@ void blinkLED(int numBlinks ) {
     else
       digitalWrite(greenLEDPin, LOW);
       
-    delay(ledFlashDelay);
+    delay(ledFlashDelay);  
+
+    
   }
 }
 
@@ -156,6 +158,7 @@ void sendSerialData() {
 // looks for a 
 void checkSerial() {
   // send data only when you receive data:
+
   int dataBytesRead = 0;
   while (Serial.available() > 0) {
     data[dataBytesRead] = Serial.read();
@@ -176,7 +179,8 @@ void checkSerial() {
   // parse the string (this is the tedious part):
   // we expect a fixed string length of "1,0,1" — ALWAYS 5 characters
   if(  dataBytesRead >= 5 ) {
-     changeLEDs();
+    // change LEDs
+    changeLEDs();
   }
   else {
       // bad data string size here
@@ -190,7 +194,6 @@ void checkSerial() {
 // [2] = green ('0' or '1'), anything other than '1' will turn off
 // [4] = blue ('0' or '1'), anything other than '1' will turn off   
 void changeLEDs() {
-  
   // Red
   if( data[0] == '1' )
     digitalWrite(redLEDPin, HIGH);
@@ -198,7 +201,7 @@ void changeLEDs() {
     digitalWrite(redLEDPin, LOW);
 
   // Green
-  if( data[2] == '1' )
+ /* if( data[2] == '1' )
     digitalWrite(greenLEDPin, HIGH);
   else
     digitalWrite(greenLEDPin, LOW);
@@ -208,5 +211,5 @@ void changeLEDs() {
     digitalWrite(blueLEDPin, HIGH);
   else
     digitalWrite(blueLEDPin, LOW);
- 
+    */
 }
