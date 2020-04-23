@@ -32,6 +32,10 @@ int greenLEDPin = 18;
 //-- time between LED flashes, for startup
 const int ledFlashDelay = 150;
 
+const int maxDataSize = 8;
+char data[maxDataSize];
+int dataOffset = 0;
+
 // the setup function runs once when you press reset or power the board
 void setup() {
   // initialize pins and input and output
@@ -57,8 +61,13 @@ void loop() {
   getSwitchValue();
   getPotValue();
   getLDRValue();
-  sendSerialData();
- 
+
+  // send our data stream
+  //sendSerialData();
+
+  // check our data stream
+  checkSerial();
+  
   // delay so as to not overload serial buffer
   delay(100);
 }
@@ -136,4 +145,38 @@ void sendSerialData() {
    
   // end with newline
   Serial.println();
+}
+
+// looks for a 
+void checkSerial() {
+  // send data only when you receive data:
+
+  int dataBytesRead = 0;
+  while (Serial.available() > 0) {
+    data[dataBytesRead] = Serial.read();
+    dataBytesRead++;
+    
+    // don't exceed our buffer
+    if( dataBytesRead >= maxDataSize )
+      break;
+  }
+  
+  // no data
+  if( dataBytesRead == 0 )
+    return;
+
+  // correct for incrementing above
+  dataBytesRead--;
+  
+  // parse the string (this is the tedious part):
+  // we expect a fixed string length of "1,0,1" — ALWAYS 5 characters
+  if(  dataBytesRead == 5 ) {
+    ; // do stuff
+   
+  }
+  else {
+      // bad data string size here
+      Serial.print("bad data:");
+      Serial.print(dataBytesRead);
+  }
 }
