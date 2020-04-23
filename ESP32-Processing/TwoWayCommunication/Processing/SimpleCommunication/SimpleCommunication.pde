@@ -163,6 +163,8 @@ void sendSerialData() {
   String dataStr = str(red) + ","  + str(blue) + "," + str(green); 
   
   myPort.write(dataStr);
+  println(dataStr);
+ //myPort.write("1,0,0");
 }
 
 void drawGraphics() {

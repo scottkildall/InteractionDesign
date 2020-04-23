@@ -12,6 +12,12 @@
   
   We use the built-in LED, but you can hook an external LED with
   a 250 Ohm (or thereabouts) resistor.  
+
+    Serial INPUT will affect an RGB LED
+    The data stream will look like "1,0,0" (R, G, B)
+    And we will each leg to on/off as a result
+
+    You can test it in the Serial monitor!
  */
 
 
@@ -69,7 +75,7 @@ void loop() {
   checkSerial();
   
   // delay so as to not overload serial buffer
-  delay(100);
+  delay(20);
 }
 
 //-- blink that number of times
@@ -145,6 +151,8 @@ void sendSerialData() {
    
   // end with newline
   Serial.println();
+
+  //Serial.flush();
 }
 
 // looks for a 
@@ -170,13 +178,38 @@ void checkSerial() {
   
   // parse the string (this is the tedious part):
   // we expect a fixed string length of "1,0,1" — ALWAYS 5 characters
-  if(  dataBytesRead == 5 ) {
-    ; // do stuff
-   
+  if(  dataBytesRead >= 5 ) {
+    // change LEDs
+    changeLEDs();
   }
   else {
       // bad data string size here
-      Serial.print("bad data:");
-      Serial.print(dataBytesRead);
+      //Serial.print("bad data:");
+      //Serial.println(dataBytesRead);
   }
+}
+
+// look at our data stream and flip leds on/off
+// [0] = red ('0' or '1'), anything other than '1' will turn off
+// [2] = green ('0' or '1'), anything other than '1' will turn off
+// [4] = blue ('0' or '1'), anything other than '1' will turn off   
+void changeLEDs() {
+  // Red
+  if( data[0] == '1' )
+    digitalWrite(redLEDPin, HIGH);
+  else
+    digitalWrite(redLEDPin, LOW);
+
+  // Green
+ /* if( data[2] == '1' )
+    digitalWrite(greenLEDPin, HIGH);
+  else
+    digitalWrite(greenLEDPin, LOW);
+
+ // Blue
+  if( data[4] == '1' )
+    digitalWrite(blueLEDPin, HIGH);
+  else
+    digitalWrite(blueLEDPin, LOW);
+    */
 }
