@@ -9,7 +9,7 @@
  
  
 Timer bubbleTimer;
-int bubbleTimerMS = 5000;  // how long in MS the timer will be
+int bubbleTimerMS = 10000;  // how long in MS the timer will be
 
 PFont displayFont;
 
@@ -34,7 +34,7 @@ void setup  () {
   progressBarWidth = width - (hMargin *2);
   
   // Allocate the timer
-  bubbleTimer = new Timer(bubbleTimerMS);    // 3 second timer
+  bubbleTimer = new Timer(bubbleTimerMS);    //  second timer
   
   
   // start the timer. Every 1/2 second, it will do something
@@ -72,7 +72,7 @@ void draw () {
   
  // DISPLAY PROGRESS BAR BASED ON PERCENTAGE
     float elapsedPercentage = bubbleTimer.getPercentageElapsed();
-    
+    println( "Elapsed % = " + elapsedPercentage ); 
    
     // draw fill
     fill( 240,100,100);
