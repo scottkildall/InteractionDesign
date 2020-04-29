@@ -20,31 +20,19 @@
 
 public class AnimatedPNG {
   //-------- PUBLIC FUNCTIONS --------/
-  public AnimatedPNG(String _baseFilename, long frameTime) {
-      // just copy the base filename
-      baseFilename = new String(_baseFilename);
-      
-      displayTimer = new Timer(frameTime);
+  public AnimatedPNG() {
+      displayTimer = new Timer(1000);
+  }
+  
+   // this does the actual loading, returns the number of images loaded
+  private int load(String baseFilename, long frameTime) {   
+      displayTimer.setTimer(frameTime);
       
       numImages = 0;
       currentImage = 0;
+     
       
-      load();
-      displayTimer.start();
-  }
-  
-  
-  
-  //-------- PRIVATE VARIABLES --------/
-  String baseFilename;
-  PImage [] images;
-  int numImages;
-  int currentImage;
-  Timer displayTimer;
- 
-  //-------- PRIVATE FUNCTIONS --------/
-  // this does the actual loading, returns the number of images loaded
-  private int load() { 
+      
     // count the files
     numImages = 1;
     
@@ -71,12 +59,13 @@ public class AnimatedPNG {
     
     println("AnimatedPNG Class, basefilename = " + baseFilename + "loaded num images = " + str(numImages) );
     
+    // And start the display timer
+    displayTimer.start();
+    
     return numImages;
   }
   
-  
-  
-  // draws current image at that location
+   // draws current image at that location
   public void draw( float x, float y) {
     update();
     
@@ -102,4 +91,19 @@ public class AnimatedPNG {
        displayTimer.start();
      } 
   }
+  
+  // returns frame number 1 to numImages (matching the filename)
+  public int getFrameNum() {
+    return currentImage + 1;
+  }
+  
+  public void setFrameTime( long frameTimeMS ) {
+    displayTimer.setTimer(frameTimeMS);
+  }
+  
+  //-------- PRIVATE VARIABLES --------/
+  PImage [] images;        // loaded images
+  int numImages;           // total number of images we have
+  int currentImage;        // current index into PImage array
+  Timer displayTimer;      // timer changes the image display speed
 }
