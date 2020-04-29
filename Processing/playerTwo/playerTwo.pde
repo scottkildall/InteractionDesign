@@ -3,24 +3,36 @@
     by Scott Kildall
   
     Shows an animation class
+    
+    Uses the AnimatedPNG class to DRAW objects
+    
+    Press '1' to slow down animation
+    Press '2' to speed it up
+    Press SPACE to release projectile
+    
+    PNG files need to be numbered with LOWERCASE, start at ONE
+    e.g. hearts1.png, hearts2.png, hearts3.png metc
  */
  
  
+// an animated figure
 AnimatedPNG animatedFigure;
 
+// Three possible projectiles
 AnimatedPNG hearts;
 AnimatedPNG bananas;
 AnimatedPNG lightning;
-AnimatedPNG spirals;
 
 AnimatedPNG  projectile;      // we change which one we are using, so never load this file
+
+//-------- PROJECTILE CODE
 boolean bShootProjectile = false;
 boolean bDrawProjectile = false;
 
 int frameNum;    // we use this for determining when to release a projectile
 int frameTimeMS = 100;
 
-
+// dawing of projectile
 float projectileX;
 float projectileY;
 float projectileSpeedX = -4;    // from right to left
@@ -29,11 +41,8 @@ void setup  () {
   size (1000, 600);  
   
   imageMode(CENTER);
-  //ellipseMode(CENTER);
-  //rectMode(CORNER);
-  //textAlign(LEFT);
   
-  // this will allocate and load all the images  
+// LOAD ANIMATED PNG files 
   animatedFigure = new AnimatedPNG();  
   animatedFigure.load("figure", frameTimeMS); // "figure1.png", "figure2.png", etc.
   
@@ -47,21 +56,22 @@ void setup  () {
   lightning.load("lightning", 25);
 } 
 
-//-- change background to red if we have a button
+//-- Draw animated figures
+//-- 
 void draw () {  
   background(0); 
   
   // draw animation
   animatedFigure.draw(width/2,height/2);
-  
-  // check for projectile release
-  checkProjectileRelease();
  
  // show all the animations
   hearts.draw( 50, height - 50 );
   bananas.draw( 150, height - 50 );
   lightning.draw( 250, height - 50 );
 
+   // check for projectile release
+  checkProjectileRelease();
+  
   // draw projectile (or nothing if it is offscreen)
   drawProjectile();
 }
@@ -137,6 +147,7 @@ void keyPressed() {
   }
 }
 
+// choose a new projectile: bananas, hearts or lightning
 void selectProjectile() {
   int projectileNum = int(random(1, 4));    // returns 1-3
   
