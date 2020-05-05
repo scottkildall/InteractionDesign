@@ -23,6 +23,8 @@ AnimatedPNG hearts;
 AnimatedPNG bananas;
 AnimatedPNG lightning;
 
+AnimatedPNG [] projectilesArray;
+
 AnimatedPNG  projectile;      // we change which one we are using, so never load this file
 
 //-------- PROJECTILE CODE
@@ -43,7 +45,16 @@ void setup  () {
   imageMode(CENTER);
   
 // LOAD ANIMATED PNG files 
-  animatedFigure = new AnimatedPNG();  
+  // allocated 3 Animated PNGs
+  
+  // (1) allocate the array 
+  projectilesArray = new AnimatedPNG[3];
+  
+  //// Allocate EACH element in the array
+  projectilesArray[0] = new AnimatedPNG();  
+ projectilesArray[0].load("figure", frameTimeMS); 
+ 
+ animatedFigure = new AnimatedPNG();  
   animatedFigure.load("figure", frameTimeMS); // "figure1.png", "figure2.png", etc.
   
   hearts = new AnimatedPNG();  // "hearts1.png", "hearts2.png", etc.
@@ -65,7 +76,7 @@ void draw () {
   animatedFigure.draw(width/2,height/2);
  
  // show all the animations
-  hearts.draw( 50, height - 50 );
+  hearts.draw( mouseX, mouseY );
   bananas.draw( 150, height - 50 );
   lightning.draw( 250, height - 50 );
 
